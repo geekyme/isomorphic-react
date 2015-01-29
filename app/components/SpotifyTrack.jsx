@@ -1,4 +1,4 @@
- 
+
 'use strict';
 
 var React = require('react');
@@ -6,15 +6,15 @@ var Router = require('react-router');
 var Link = Router.Link;
 
 var SpotifyAlbumCover = React.createClass({
-	render: function() {	
+	render: function() {
 		var url;
-		try { 
+		try {
 			url = this.props.model.images[1].url;
 		} catch(e) {
 			return false;
 		}
-		return this.transferPropsTo(
-			<figure>
+		return (
+			<figure {...this.props}>
 				<img className='img-responsive img-rounded' src={url}/>
 			</figure>
 		);
@@ -27,10 +27,10 @@ module.exports = React.createClass({
 		if(!this.props.model) {
 			return false;
 		}
-		
+
 		var model = this.props.model;
 		var query = this.getQuery();
-		
+
 		return (
 			<article className='row'>
 				<Link to="/" query={query}>
@@ -43,4 +43,4 @@ module.exports = React.createClass({
 			</article>
 		);
 	}
-});	
+});

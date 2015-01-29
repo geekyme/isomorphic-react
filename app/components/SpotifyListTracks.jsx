@@ -6,16 +6,16 @@ var Router = require('react-router');
 var Link = Router.Link;
 var warn = require('debug')('app:component:spotifylisttracks:warn');
 var SpotifyAlbumCover = React.createClass({
-	render: function() {	
+	render: function() {
 		var url;
-		try { 
+		try {
 			url = this.props.model.images[1].url;
 		} catch(e) {
 			warn('album missing covere image', this.props.model);
 			return false;
 		}
-		return this.transferPropsTo(
-			<figure>
+		return (
+			<figure {...this.props}>
 				<img className='img-responsive img-rounded' src={url}/>
 			</figure>
 		);
@@ -28,10 +28,10 @@ var SpotifyTrack = React.createClass({
 		if(!this.props.model) {
 			return false;
 		}
-		
+
 		var model = this.props.model;
 		var query = this.getQuery();
-		
+
 		return (
 			<article className='row'>
 				<Link to="track" params={model} query={query}>
@@ -45,7 +45,7 @@ var SpotifyTrack = React.createClass({
 		);
 	}
 });
-	
+
 module.exports = React.createClass({
 	displayName: 'SpotifyListTracks',
 	render: function() {

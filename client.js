@@ -1,15 +1,15 @@
 /* jshint node:false */
 (function() {
-		
+
 	'use strict';
-	
+
 	var debug = require('debug')('app:client:debug');
 	var error = require('debug')('app:client:error');
-	
+
 	try {
 		var React = require('react');
 		var Router = require('react-router');
-		var app = require('app');
+		var app = require('./app');
 		var dehydratedState = window[app.uid];
 
 		// Debug.enable('*');

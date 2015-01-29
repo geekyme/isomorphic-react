@@ -2,7 +2,7 @@
 
 var React		= require('react');
 var Router = require('react-router');
-var StoreMixin = require('fluxible-app').StoreMixin;
+var StoreMixin = require('fluxible').StoreMixin;
 var DataStore = require('../../stores/DataStore');
 var SpotifySearch = require('../SpotifySearch.jsx');
 var SpotifyMessage = require('../SpotifyMessage.jsx');
@@ -10,7 +10,7 @@ var SpotifyListTracks = require('../SpotifyListTracks.jsx');
 
 
 module.exports = React.createClass({
-	displayName: 'ViewTrack',			
+	displayName: 'ViewTrack',
 	mixins: [Router.State, StoreMixin],
 	statics: {
 		loadAction: require('../../actions/LoadSearch'),

@@ -1,7 +1,7 @@
 
 'use strict';
 
-var FluxibleApp = require('fluxible-app');
+var FluxibleApp = require('fluxible');
 var app = new FluxibleApp({
 	appComponent: require('./routes.jsx')
 });
