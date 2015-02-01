@@ -4,10 +4,10 @@ block content
   div(id="#{uid}")
     | !{html}
   script
-    !{state}
+    | !{state}
   script(src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/4.0.3/es5-shim.min.js")
   script(src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/4.0.3/es5-sham.min.js")
   script(src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js")
   script(src="//cdnjs.cloudflare.com/ajax/libs/react/0.12.0/react.js")
-  if debug
+  if devPort
     script(src="http://localhost:#{devPort}/resources/bundle.js")

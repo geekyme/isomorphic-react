@@ -20,41 +20,13 @@ var express = require('express'),
 		devPort = port+1;
 
 if(server.get('env') === 'development'){
-	var WebpackDevServer = require("webpack-dev-server"),
-			webpack = require('webpack'),
-			config = require('./webpack.config.js'),
-			webpackCompiler = webpack(config),
-			webpackDevServer = new WebpackDevServer(webpackCompiler, {
-			    // webpack-dev-server options
-			    // contentBase: "http://localhost:5001",
-			    // or: contentBase: "http://localhost/",
-
-			    hot: true,
-			    // Enable special support for Hot Module Replacement
-			    // Page is no longer updated, but a "webpackHotUpdate" message is send to the content
-			    // Use "webpack/hot/dev-server" as additional module in your entry point
-			        // Note: this does _not_ add the `HotModuleReplacementPlugin` like the CLI option does. 
-
-			    // webpack-dev-middleware options
-			    // quiet: false,
-			    // noInfo: false,
-			    // lazy: true,
-			    watchDelay: 300,
-			    publicPath: config.output.publicPath,
-			    headers: { "X-Custom-Header": "yes" },
-			    stats: { colors: true }
-			});
-	webpackDevServer.listen(devPort, function(){
-		console.log('dev server started');
-	});
 	server.use(logger('dev'));
 }else{
 	server.use(logger('tiny'));
 }
 
 // exposing some jade locals for templating purposes
-server.locals.debug = server.get('env') === 'development';
-if(server.locals.debug){
+if(server.get('env') === 'development'){
 	server.locals.devPort = devPort; 
 }
 
