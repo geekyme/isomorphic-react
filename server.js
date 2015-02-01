@@ -5,39 +5,62 @@
 require('node-jsx').install({ extension: '.jsx' });
 
 var express = require('express'),
+		path = require('path'),
 		expressState = require('express-state'),
-		expressHandlebars = require('express-handlebars'),
 		compression	= require('compression'),
 		bodyParser = require('body-parser'),
 		debug = require('debug')('server:'),
+		logger = require('morgan'),
 		React = require('react'),
 		Router = require('react-router'),
 		async = require('async'),
 		server = express(),
 		app = require('./app'),
-		hbs = expressHandlebars.create({extname: '.hbs'}),
-		port = process.env.PORT || 5000;
+		port = process.env.PORT || 5000,
+		devPort = port+1;
 
+if(server.get('env') === 'development'){
+	var WebpackDevServer = require("webpack-dev-server"),
+			webpack = require('webpack'),
+			webpackConfig = require('./webpack.config.js'),
+			webpackCompiler = webpack(webpackConfig),
+			webpackDevServer = new WebpackDevServer(webpackCompiler, {
+			    // webpack-dev-server options
+			    contentBase: "http://localhost/",
+			    // or: contentBase: "http://localhost/",
 
-// Running in production you should precompile your bundle.
-var logger = require('morgan'),
-		webpack = require('webpack'),
-		webpackConfig = require('./webpack.config.js'),
-		webpackCompiler = webpack(webpackConfig),
-		webpackMiddlewareFactory = require("webpack-dev-middleware"),
-		webpackMiddleware = webpackMiddlewareFactory(webpackCompiler, {
-			// noInfo: true,
-			publicPath: webpackConfig.output.path,
-			stats: {colors: true}
-		});
+			    hot: true,
+			    // Enable special support for Hot Module Replacement
+			    // Page is no longer updated, but a "webpackHotUpdate" message is send to the content
+			    // Use "webpack/hot/dev-server" as additional module in your entry point
+			        // Note: this does _not_ add the `HotModuleReplacementPlugin` like the CLI option does. 
 
-server.use(webpackMiddleware);
-server.use(logger('dev'));
+			    // webpack-dev-middleware options
+			    quiet: false,
+			    // noInfo: false,
+			    // lazy: true,
+			    watchDelay: 300,
+			    publicPath: "/resources/",
+			    headers: { "X-Custom-Header": "yes" },
+			    stats: { colors: true }
+			});
+	webpackDevServer.listen(devPort, function(){
+		console.log('dev server started');
+	});
+	server.use(logger('dev'));
+}else{
+	server.use(logger('tiny'));
+}
 
-// Register handlebars .engine with the Express server.
-server.engine('hbs', hbs.engine);
-server.set('views', './app/views');
-server.set('view engine', 'hbs');
+// exposing some jade locals for templating purposes
+server.locals.debug = server.get('env') === 'development';
+if(server.locals.debug){
+	server.locals.devPort = devPort; 
+}
+
+// view engine setup
+server.set('views', path.join(__dirname, 'views'));
+server.set('view engine', 'jade');
 server.set('state namespace', app.uid);
 
 server.use(bodyParser.json()); // to support JSON-encoded bodies
@@ -49,7 +72,9 @@ server.use('/node_modules', express.static('./node_modules'));
 server.use('/resources', express.static('./resources'));
 
 expressState.extend(server);
+	
 
+// middleware to handle server side rendering
 server.use(function (req, res, next) {
 	var context = app.createContext({
 		api: process.env.API || 'https://api.spotify.com/v1',
@@ -62,7 +87,10 @@ server.use(function (req, res, next) {
 
 	Router.run(app.getAppComponent(), req.url, function (Handler, state) {
 	
-		if(state.routes.length === 0) { res.status(404); }
+		if(state.routes.length === 0) { 
+			// no such route, pass to the next middleware which handles 404
+			return next();
+		}
 		
 		async.filterSeries(
 			state.routes.filter(function(route) {
@@ -75,7 +103,7 @@ server.use(function (req, res, next) {
 				debug('Rendering application components');
 				var markup = React.renderToString(React.createElement(Handler, {context: context.getComponentContext()}));
 				res.expose(app.dehydrate(context), app.uid);
-				res.render('layout', {
+				res.render('index', {
 					uid: app.uid,
 					html: markup
 				}, function (err, markup) {
@@ -88,6 +116,38 @@ server.use(function (req, res, next) {
 		);
 	});
 });
+
+// catch 404 and forward to error handler
+server.use(function(req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+});
+
+// error handlers
+
+// development error handler
+// will print stacktrace
+if (server.get('env') === 'development') {
+    server.use(function(err, req, res, next) {
+        res.status(err.status || 500);
+        res.render('error', {
+            message: err.message,
+            error: err
+        });
+    });
+}
+
+// production error handler
+// no stacktraces leaked to user
+server.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+        message: err.message,
+        error: {}
+    });
+});
+
 
 server.listen(port, function() {
 	console.log("Running in %s and listening on %s", __dirname, port);

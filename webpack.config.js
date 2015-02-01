@@ -12,9 +12,7 @@ module.exports = {
 	],
   output: {
 		path: '/resources/js',
-    filename: '[name].bundle.js',
-		chunkFilename: '[id].bundle.js',
-		hashDigestLength: 32
+    filename: 'bundle.js'
   },
 	module: {
 		loaders: [

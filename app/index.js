@@ -6,6 +6,7 @@ var app = new FluxibleApp({
 	appComponent: require('./routes.jsx')
 });
 
+// this sets the namespace for context variables used in dehydration & rehydration
 app.uid = '__example';
 
 app.registerStore(require('./stores/DataStore'));
