@@ -15,19 +15,14 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin()
 	],
   output: {
-		path: __dirname, 
+		path: __dirname + '/resources/', 
     filename: 'bundle.js',
     publicPath: 'http://localhost:5001/resources/'
   },
 	module: {
 		loaders: [
-			{ test: /\.jsx$/, loader: 'jsx-loader' }
+      { test: /\.jsx$/, loaders: ['react-hot', 'jsx'] }
 		]
 	},
-	devtool: '#source-map',
-  externals: {
-		jquery: "jQuery",
-		react: "React",
-		modernizr: "Modernizr"
-	}
+	devtool: '#eval'
 };

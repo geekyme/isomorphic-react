@@ -17,7 +17,7 @@ var WebpackDevServer = require("webpack-dev-server"),
       quiet: true,
       // noInfo: true,
       // lazy: true,
-      watchDelay: 1000,
+      watchDelay: 300,
       publicPath: config.output.publicPath,
       headers: { "Access-Control-Allow-Origin": "*" },
       stats: { colors: true }
