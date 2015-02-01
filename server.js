@@ -22,11 +22,11 @@ var express = require('express'),
 if(server.get('env') === 'development'){
 	var WebpackDevServer = require("webpack-dev-server"),
 			webpack = require('webpack'),
-			webpackConfig = require('./webpack.config.js'),
-			webpackCompiler = webpack(webpackConfig),
+			config = require('./webpack.config.js'),
+			webpackCompiler = webpack(config),
 			webpackDevServer = new WebpackDevServer(webpackCompiler, {
 			    // webpack-dev-server options
-			    contentBase: "http://localhost/",
+			    // contentBase: "http://localhost:5001",
 			    // or: contentBase: "http://localhost/",
 
 			    hot: true,
@@ -36,11 +36,11 @@ if(server.get('env') === 'development'){
 			        // Note: this does _not_ add the `HotModuleReplacementPlugin` like the CLI option does. 
 
 			    // webpack-dev-middleware options
-			    quiet: false,
+			    // quiet: false,
 			    // noInfo: false,
 			    // lazy: true,
 			    watchDelay: 300,
-			    publicPath: "/resources/",
+			    publicPath: config.output.publicPath,
 			    headers: { "X-Custom-Header": "yes" },
 			    stats: { colors: true }
 			});
@@ -67,9 +67,7 @@ server.use(bodyParser.json()); // to support JSON-encoded bodies
 server.use(bodyParser.urlencoded({extended: true})); // to support URL-encoded bodies
 server.use(compression({ filter: function(args) { return true; } })); // compress all requests and types
 
-server.use('/app', express.static('./app'));
-server.use('/node_modules', express.static('./node_modules'));
-server.use('/resources', express.static('./resources'));
+server.use(express.static(__dirname + '/resources'));
 
 expressState.extend(server);
 	

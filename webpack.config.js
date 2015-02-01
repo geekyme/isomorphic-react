@@ -2,17 +2,22 @@
 
 'use strict';
 
+var webpack = require('webpack');
+var path = require('path')
+
 module.exports = {
-  context: __dirname,
-  entry: {
-		client: ['./client.js']
-	},
+  entry: [
+    'webpack-dev-server/client?http://localhost:5001',
+		'webpack/hot/dev-server', 
+    './client.js'
+  ],
 	plugins: [
-		// new webpack.IgnorePlugin(/^react\//),
+    new webpack.HotModuleReplacementPlugin()
 	],
   output: {
-		path: '/resources/js',
-    filename: 'bundle.js'
+		path: __dirname, 
+    filename: 'bundle.js',
+    publicPath: 'http://localhost:5001/resources/'
   },
 	module: {
 		loaders: [
