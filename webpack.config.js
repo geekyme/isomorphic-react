@@ -8,7 +8,7 @@ var path = require('path')
 module.exports = {
   entry: [
     'webpack-dev-server/client?http://localhost:5001',
-		'webpack/hot/dev-server', 
+		'webpack/hot/only-dev-server', 
     './client.js'
   ],
 	plugins: [
