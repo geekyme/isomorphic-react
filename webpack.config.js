@@ -15,9 +15,9 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin()
 	],
   output: {
-		path: __dirname + '/resources/', 
+		path: __dirname + '/build/', 
     filename: 'bundle.js',
-    publicPath: 'http://localhost:5001/resources/'
+    publicPath: 'http://localhost:5001/build/'
   },
 	module: {
 		loaders: [

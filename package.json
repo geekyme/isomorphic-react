@@ -4,7 +4,7 @@
   "description": "Example app to demonstrate isomorphic JavaScript concepts.",
   "main": "server/index.js",
   "scripts": {
-    "start": "NODE_ENV=production node server",
+    "start": "npm run build ; NODE_ENV=production node server",
     "start-dev": "node_modules/.bin/nodemon -e js,jade,jsx server.js & node dev_server.js",
     "build": "webpack -p --config webpack.p.config.js"
   },

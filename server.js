@@ -17,8 +17,7 @@ var express = require('express'),
 		server = express(),
 		app = require('./app'),
 		port = process.env.PORT || 5000,
-		devPort = port+1,
-		stats = require('./resources/stats.json');
+		devPort = port+1
 
 if(server.get('env') === 'development'){
 	server.use(logger('dev'));
@@ -31,7 +30,12 @@ if(server.get('env') === 'development'){
 	server.locals.devPort = devPort; 
 }else{
 	// pass to template for linking
-	server.locals.hash = stats.hash;
+	try{
+		var stats = require('./build/stats.json');
+		server.locals.hash = stats.hash;
+	}catch(e){
+
+	}
 }
 
 // view engine setup
@@ -43,7 +47,9 @@ server.use(bodyParser.json()); // to support JSON-encoded bodies
 server.use(bodyParser.urlencoded({extended: true})); // to support URL-encoded bodies
 server.use(compression({ filter: function(args) { return true; } })); // compress all requests and types
 
-server.use(express.static(__dirname + '/resources'));
+// requesting static files with different priority
+server.use(express.static(__dirname + '/build'));
+server.use(express.static(__dirname + '/static'));
 
 expressState.extend(server);
 	

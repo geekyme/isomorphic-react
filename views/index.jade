@@ -6,4 +6,6 @@ block content
   script
     | !{state}
   if devPort
-    script(src="http://localhost:#{devPort}/resources/bundle.js")
+    script(src="http://localhost:#{devPort}/build/bundle.js")
+  else
+    script(src="/client.#{hash}.js")
