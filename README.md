@@ -13,7 +13,7 @@ Credits to https://github.com/alexaivars/isomorphic-react for original code base
 
 ### TODO 
 
-1. Running production builds - precompiling webpack into a 'build' folder
-2. Production builds should support cache-busting
+1. Running production builds - precompiling webpack into a 'build' folder (done)
+2. Production builds should support cache-busting (done)
 3. Production builds should support commons chunk and page specific chunks. 
 4. Builds should also support asynchronous script loading
