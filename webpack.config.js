@@ -21,7 +21,7 @@ module.exports = {
   },
 	module: {
 		loaders: [
-      { test: /\.jsx$/, loaders: ['react-hot', 'jsx'] }
+      { test: /\.jsx$/, loaders: ['promise?bluebird', 'react-hot', 'jsx'] }
 		]
 	},
 	devtool: '#eval'
