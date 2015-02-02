@@ -26,4 +26,5 @@ This builds production assets and start the server in production mode
 1. Running production builds - precompiling webpack into a 'build' folder (done)
 2. Production builds should support cache-busting (done)
 3. Production builds should support commons chunk and page specific chunks. 
-4. Builds should also support asynchronous script loading
+4. Builds should also support asynchronous script loading with React router.
+5. Handle non-JS builds.
