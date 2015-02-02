@@ -8,8 +8,15 @@ Credits to https://github.com/alexaivars/isomorphic-react for original code base
 ### Run `npm install` to install dependenices
 		$ npm install
 
-### Run the app!
-		$ npm start
+### Run the app in dev mode!
+
+This starts up the server and webpack's dev server with hot reloading
+		$ npm run start-dev
+
+### Run the app in prod mode!
+
+This builds production assets and start the server in production mode
+    $ npm start
 
 ### TODO 
 
