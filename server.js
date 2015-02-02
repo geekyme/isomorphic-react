@@ -17,7 +17,8 @@ var express = require('express'),
 		server = express(),
 		app = require('./app'),
 		port = process.env.PORT || 5000,
-		devPort = port+1;
+		devPort = port+1,
+		stats = require('./resources/stats.json');
 
 if(server.get('env') === 'development'){
 	server.use(logger('dev'));
@@ -28,6 +29,9 @@ if(server.get('env') === 'development'){
 // exposing some jade locals for templating purposes
 if(server.get('env') === 'development'){
 	server.locals.devPort = devPort; 
+}else{
+	// pass to template for linking
+	server.locals.hash = stats.hash;
 }
 
 // view engine setup
