@@ -23,12 +23,11 @@ module.exports = {
   output: {
     path: __dirname + '/build/', 
     filename: '[name].[hash].js',
-    chunkFilename: '[id].[name].[hash].js',
-    publicPath: '/'
+    publicPath: '/build/'
   },
   module: {
     loaders: [
-      { test: /\.jsx$/, loaders: ['promise?bluebird', 'jsx'] }
+      { test: /\.jsx$/, loaders: ['jsx'] }
     ]
   }
 };
